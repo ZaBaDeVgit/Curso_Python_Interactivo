@@ -27,7 +27,7 @@ st.markdown(
     }
   .class-card:hover {
     transform: translateX(10px);
-    background-color: rgba(144, 238, 144, 0.15);
+    background-color: rgba(200, 255, 200, 0.2);
 }
 </style>
 """,
