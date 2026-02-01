@@ -58,6 +58,9 @@ with col1:
         ("06_Clase_Encapsulamiento.py", "🔒", "Clase 5: Encapsulamiento", "Modificadores de acceso"),
         ("07_Clase_MetodosEspeciales.py", "✨", "Clase 6: Métodos Especiales", "__str__, __repr__ y más"),
         ("08_Clase_Propiedades.py", "🏗️", "Clase 7: Propiedades", "@property y decoradores"),
+        ("09_Clase_MetodosClase.py", "🔧", "Clase 8: Métodos de Clase", "@classmethod y @staticmethod"),
+        ("10_Clase_Composicion.py", "🧩", "Clase 9: Composición", "has-a vs is-a"),
+        ("11_Clase_MiniCalc.py", "🧮", "Clase 10: Proyecto MiniCalc", "Integración de conceptos"),
     ]
 
     for filename, icon, titulo, desc in clases:
