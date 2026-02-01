@@ -53,6 +53,11 @@ with col1:
         ("01_Introduccion.py", "🏠", "Introducción", "Conceptos básicos y setup"),
         ("02_Clase_Classes.py", "📦", "Clase 1: Classes", "Creando tu primera clase"),
         ("03_Clase_Metodos.py", "⚙️", "Clase 2: Métodos", "__init__, self y métodos"),
+        ("04_Clase_Herencia.py", "🔗", "Clase 3: Herencia", "Clases hijas y super()"),
+        ("05_Clase_Polimorfismo.py", "🎭", "Clase 4: Polimorfismo", "Múltiples formas"),
+        ("06_Clase_Encapsulamiento.py", "🔒", "Clase 5: Encapsulamiento", "Modificadores de acceso"),
+        ("07_Clase_MetodosEspeciales.py", "✨", "Clase 6: Métodos Especiales", "__str__, __repr__ y más"),
+        ("08_Clase_Propiedades.py", "🏗️", "Clase 7: Propiedades", "@property y decoradores"),
     ]
 
     for filename, icon, titulo, desc in clases:
