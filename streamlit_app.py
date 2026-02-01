@@ -1,53 +1,55 @@
 import streamlit as st
 
+# CSS para ocultar menú automático - debe ir primero
+st.markdown("""
+<style>
+/* Ocultar todos los menús automáticos de Streamlit */
+.stMainMenu,
+[data-testid="stSidebarNav"],
+[data-testid="stSidebarNavContent"],
+.st-emotion-cache-1lcbmhc,
+.st-emotion-cache-1av4cm7,
+.css-1d391kg,
+.css-1lcbmhc {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    overflow: hidden !important;
+}
+
+/* Ocultar específicamente la navegación de páginas */
+section[data-testid="stSidebar"] > div:first-child {
+    display: none !important;
+}
+
+.main-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+.class-card {
+    padding: 2rem;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+    margin: 1rem 0;
+    transition: transform 0.3s;
+}
+.class-card:hover {
+    transform: translateX(10px);
+    background-color: rgba(200, 255, 200, 0.2);
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.set_page_config(
     page_title="Curso Python POO",
     page_icon="🐍",
     layout="wide",
     initial_sidebar_state="expanded",
-    menu_items=None,  # Oculta el menú automático de Streamlit
-)
-
-st.markdown(
-    """
-<style>
-    /* Ocultar completamente el menú automático de Streamlit */
-    .stMainMenu {
-        display: none !important;
-    }
-
-    /* Ocultar navegación de páginas */
-    [data-testid="stSidebarNav"] {
-        display: none !important;
-    }
-
-    /* Ocultar cualquier otro menú de navegación */
-    .st-emotion-cache-1lcbmhc {
-        display: none !important;
-    }
-
-    .main-header {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-    }
-    .class-card {
-        padding: 2rem;
-        border-radius: 10px;
-        border-left: 5px solid #667eea;
-        margin: 1rem 0;
-        transition: transform 0.3s;
-    }
-  .class-card:hover {
-    transform: translateX(10px);
-    background-color: rgba(200, 255, 200, 0.2);
-}
-</style>
-""",
-    unsafe_allow_html=True,
+    menu_items=None,
 )
 
 st.markdown(
