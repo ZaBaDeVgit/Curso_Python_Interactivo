@@ -7,6 +7,44 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# JavaScript para ocultar el menú automático de Streamlit
+st.markdown("""
+<script>
+// Esperar a que la página cargue completamente
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para ocultar el menú automático
+    function ocultarMenuAutomatico() {
+        // Buscar y ocultar el menú de navegación de páginas
+        const menuNav = document.querySelector('[data-testid="stSidebarNav"]');
+        if (menuNav) {
+            menuNav.style.display = 'none';
+        }
+
+        // Buscar y ocultar otros elementos de navegación
+        const navElements = document.querySelectorAll('[data-testid*="stSidebar"], .st-emotion-cache-1lcbmhc, .st-emotion-cache-1av4cm7');
+        navElements.forEach(el => {
+            if (el && el.textContent.includes('streamlit') || el.textContent.includes('.py')) {
+                el.style.display = 'none';
+            }
+        });
+
+        // Ocultar el primer div dentro del sidebar que contiene la navegación automática
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        if (sidebar && sidebar.firstElementChild) {
+            const firstChild = sidebar.firstElementChild;
+            if (firstChild && (firstChild.textContent.includes('streamlit') || firstChild.querySelector('[data-testid="stSidebarNav"]'))) {
+                firstChild.style.display = 'none';
+            }
+        }
+    }
+
+    // Ejecutar inmediatamente y cada 500ms por si carga tarde
+    ocultarMenuAutomatico();
+    setInterval(ocultarMenuAutomatico, 500);
+});
+</script>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <style>
 .main-header {
