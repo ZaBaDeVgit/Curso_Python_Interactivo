@@ -11,10 +11,19 @@ st.set_page_config(
 st.markdown(
     """
 <style>
-    /* Ocultar menú automático de Streamlit */
+    /* Ocultar completamente el menú automático de Streamlit */
     .stMainMenu {
-        visibility: hidden;
-        height: 0px;
+        display: none !important;
+    }
+
+    /* Ocultar navegación de páginas */
+    [data-testid="stSidebarNav"] {
+        display: none !important;
+    }
+
+    /* Ocultar cualquier otro menú de navegación */
+    .st-emotion-cache-1lcbmhc {
+        display: none !important;
     }
 
     .main-header {
