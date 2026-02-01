@@ -5,11 +5,18 @@ st.set_page_config(
     page_icon="🐍",
     layout="wide",
     initial_sidebar_state="expanded",
+    menu_items=None,  # Oculta el menú automático de Streamlit
 )
 
 st.markdown(
     """
 <style>
+    /* Ocultar menú automático de Streamlit */
+    .stMainMenu {
+        visibility: hidden;
+        height: 0px;
+    }
+
     .main-header {
         text-align: center;
         padding: 3rem 1rem;
