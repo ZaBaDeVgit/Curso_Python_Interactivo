@@ -1,30 +1,14 @@
 import streamlit as st
 
-# CSS para ocultar SOLO el menú automático de Streamlit
+st.set_page_config(
+    page_title="Curso Python POO",
+    page_icon="🐍",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 st.markdown("""
 <style>
-/* Ocultar solo el menú automático de navegación de páginas */
-[data-testid="stSidebarNav"],
-[data-testid="stSidebarNavContent"],
-.st-emotion-cache-1lcbmhc,
-.st-emotion-cache-1av4cm7 {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0px !important;
-    overflow: hidden !important;
-}
-
-/* Ocultar específicamente la navegación automática de páginas */
-section[data-testid="stSidebar"] > div:first-child {
-    display: none !important;
-}
-
-/* NO ocultar nuestro sidebar personalizado */
-.stSidebar {
-    display: block !important;
-    visibility: visible !important;
-}
-
 .main-header {
     text-align: center;
     padding: 3rem 1rem;
@@ -46,14 +30,6 @@ section[data-testid="stSidebar"] > div:first-child {
 }
 </style>
 """, unsafe_allow_html=True)
-
-st.set_page_config(
-    page_title="Curso Python POO",
-    page_icon="🐍",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items=None,
-)
 
 st.markdown(
     """
