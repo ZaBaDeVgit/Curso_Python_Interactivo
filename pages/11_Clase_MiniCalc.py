@@ -39,12 +39,12 @@ with st.sidebar:
     2. Crear calculadora POO
     3. Usar composición
     4. Integrar todo aprendido
-    
+
     ### Navegación:
     """)
     st.page_link("streamlit_app.py", label="🏠 Home")
     st.page_link("pages/10_Clase_Composicion.py", label="⬅️ Anterior")
-    st.page_link("pages/12_Clase_HerenciaMultiple.py", label="➡️ Siguiente (Módulo 2)")
+    st.page_link("streamlit_app.py", label="➡️ Siguiente (Módulo 2)")
 
 st.title("🧮 Clase 10: Proyecto Final - MiniCalculadora POO")
 
@@ -74,7 +74,7 @@ with col1:
     <p><i>Integra todos los conceptos del módulo!</i></p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     if st.button("🆘 Ver Solución Completa"):
         st.code("""
 from abc import ABC, abstractmethod
@@ -83,35 +83,35 @@ class Operacion(ABC):
     def __init__(self, a, b):
         self.a = a
         self.b = b
-    
+
     @abstractmethod
     def ejecutar(self):
         pass
-    
+
     def __str__(self):
         return f"{self.a} {self.simbolo} {self.b} = {self.ejecutar()}"
 
 class Suma(Operacion):
     simbolo = "+"
-    
+
     def ejecutar(self):
         return self.a + self.b
 
 class Resta(Operacion):
     simbolo = "-"
-    
+
     def ejecutar(self):
         return self.a - self.b
 
 class Multiplica(Operacion):
     simbolo = "*"
-    
+
     def ejecutar(self):
         return self.a * self.b
 
 class Divide(Operacion):
     simbolo = "/"
-    
+
     def ejecutar(self):
         if self.b == 0:
             raise ValueError("No se puede dividir por cero")
@@ -120,44 +120,44 @@ class Divide(Operacion):
 class Historial:
     def __init__(self):
         self._operaciones = []
-    
+
     def agregar(self, operacion):
         self._operaciones.append(operacion)
-    
+
     def mostrar(self):
         return [str(op) for op in self._operaciones]
 
 class Calculadora:
     def __init__(self):
         self.historial = Historial()
-    
+
     def sumar(self, a, b):
         op = Suma(a, b)
         self.historial.agregar(op)
         return op.ejecutar()
-    
+
     def restar(self, a, b):
         op = Resta(a, b)
         self.historial.agregar(op)
         return op.ejecutar()
-    
+
     def multiplicar(self, a, b):
         op = Multiplica(a, b)
         self.historial.agregar(op)
         return op.ejecutar()
-    
+
     def dividir(self, a, b):
         op = Divide(a, b)
         self.historial.agregar(op)
         return op.ejecutar()
-    
+
     def ver_historial(self):
         return self.historial.mostrar()
         """, language="python")
 
 with col2:
     st.subheader("💻 Editor de Código")
-    
+
     codigo_default = """from abc import ABC, abstractmethod
 
 # Clase base abstracta
@@ -165,39 +165,39 @@ class Operacion(ABC):
     def __init__(self, a, b):
         self.a = a
         self.b = b
-    
+
     @abstractmethod
     def ejecutar(self):
         pass
-    
+
     def __str__(self):
         return f"{self.a} {self.simbolo} {self.b} = {self.ejecutar()}"
 
 # Clases hijas
 class Suma(Operacion):
     simbolo = "+"
-    
+
     def ejecutar(self):
         # Implementa la suma
         pass
 
 class Resta(Operacion):
     simbolo = "-"
-    
+
     def ejecutar(self):
         # Implementa la resta
         pass
 
 class Multiplica(Operacion):
     simbolo = "*"
-    
+
     def ejecutar(self):
         # Implementa la multiplicación
         pass
 
 class Divide(Operacion):
     simbolo = "/"
-    
+
     def ejecutar(self):
         # Implementa la división con validación
         pass
@@ -206,11 +206,11 @@ class Divide(Operacion):
 class Calculadora:
     def __init__(self):
         self.historial = []
-    
+
     def sumar(self, a, b):
         # Crea operación, agrega al historial y retorna resultado
         pass
-    
+
     def ver_historial(self):
         # Retorna el historial de operaciones
         pass
@@ -222,16 +222,16 @@ print(f"10 - 4 = {calc.restar(10, 4)}")
 print("Historial:", calc.ver_historial())"""
 
     codigo = st.text_area("Escribe tu código:", value=codigo_default, height=350)
-    
+
     if st.button("▶️ Ejecutar Código", type="primary"):
         old_stdout = sys.stdout
         sys.stdout = buffer = StringIO()
-        
+
         try:
             exec(codigo, {"__name__": "__main__"})
             sys.stdout = old_stdout
             output = buffer.getvalue()
-            
+
             if output:
                 st.success("✅ Resultado:")
                 st.code(output, language="text")
@@ -308,5 +308,5 @@ with col_home:
         st.switch_page("streamlit_app.py")
 
 with col_next:
-    if st.button("➡️ Siguiente (Módulo 2)"):
-        st.switch_page("pages/12_Clase_HerenciaMultiple.py")
+    if st.button("🏠 Volver al Inicio"):
+        st.switch_page("streamlit_app.py")
