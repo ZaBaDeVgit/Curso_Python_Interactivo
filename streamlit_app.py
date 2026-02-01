@@ -9,50 +9,71 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* Ocultar SOLO el menú automático de Streamlit */
-[data-testid="stSidebarNav"],
-[data-testid="stSidebarNavContent"],
-section[data-testid="stSidebar"] > div:first-child {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0px !important;
-    overflow: hidden !important;
-}
+    /* === OCULTAR MENÚ AUTOMÁTICO DE STREAMLIT === */
+    [data-testid="stSidebarNav"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        position: absolute !important;
+    }
 
-/* NO ocultar nuestro sidebar personalizado */
-section[data-testid="stSidebar"] {
-    display: block !important;
-    visibility: visible !important;
-    height: auto !important;
-}
+    /* Ocultar el contenedor del menú automático */
+    section[data-testid="stSidebar"] > div:first-child > div:first-child {
+        display: none !important;
+    }
 
-/* Asegurar que nuestros elementos se vean */
-.st-expander,
-.st-emotion-cache-1jicfl2,
-[data-testid="stExpander"] {
-    display: block !important;
-    visibility: visible !important;
-}
+    /* Para versiones más recientes de Streamlit */
+    section[data-testid="stSidebar"] ul {
+        display: none !important;
+    }
 
-.main-header {
-    text-align: center;
-    padding: 3rem 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-}
-.class-card {
-    padding: 2rem;
-    border-radius: 10px;
-    border-left: 5px solid #667eea;
-    margin: 1rem 0;
-    transition: transform 0.3s;
-}
-.class-card:hover {
-    transform: translateX(10px);
-    background-color: rgba(200, 255, 200, 0.2);
-}
+    /* Clases adicionales que puede usar Streamlit */
+    .st-emotion-cache-1gwvy71,
+    .st-emotion-cache-pkbazv {
+        display: none !important;
+    }
+
+    /* === MANTENER VISIBLE EL SIDEBAR PERSONALIZADO === */
+    section[data-testid="stSidebar"] {
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    /* Asegurar que los expanders se vean */
+    .st-expander,
+    [data-testid="stExpander"] {
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    /* === ESTILOS PERSONALIZADOS === */
+    .main-header {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .class-card {
+        padding: 2rem;
+        border-radius: 10px;
+        border-left: 5px solid #667eea;
+        margin: 1rem 0;
+        transition: transform 0.3s;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .class-card:hover {
+        transform: translateX(10px);
+        background-color: rgba(102, 126, 234, 0.1);
+    }
+
+    .class-card h3 {
+        margin-top: 0;
+        color: #667eea;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -66,9 +87,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Sidebar con menú desplegable
+# Sidebar con menú desplegable personalizado
 with st.sidebar:
     st.title("📚 Bienvenid@s al Curso")
+
+    st.markdown("---")
 
     # Menú desplegable para módulos
     with st.expander("🎯 Módulo 1: Fundamentos POO", expanded=True):
@@ -97,6 +120,10 @@ with st.sidebar:
     with st.expander("⚡ Módulo 5: POO Moderna", expanded=False):
         st.write("Próximamente...")
 
+    st.markdown("---")
+    st.caption("💡 Navega usando los módulos")
+
+# Contenido principal
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -134,7 +161,20 @@ with col1:
 with col2:
     st.subheader("📊 Tu Progreso")
     st.progress(0, text="0% Completado")
+
     st.info("💡 Usa el menú lateral para navegar entre clases")
 
+    st.markdown("### 🎯 Objetivos del Curso")
+    st.markdown("""
+    - ✅ Dominar POO en Python
+    - ✅ Crear aplicaciones reales
+    - ✅ Buenas prácticas de código
+    - ✅ Patrones de diseño
+    """)
+
 st.markdown("---")
-st.caption("Curso creado por ZaBaDeV ❤️")
+st.markdown("### 🚀 ¿Listo para empezar?")
+st.write("Selecciona una clase del menú lateral o haz clic en los botones de arriba para comenzar tu viaje en la Programación Orientada a Objetos.")
+
+st.markdown("---")
+st.caption("Curso creado por ZaBaDeV con ❤️ | © 2024")
