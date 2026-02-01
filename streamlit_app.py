@@ -9,29 +9,27 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* Ocultar menú automático de Streamlit - solución definitiva */
+/* Ocultar SOLO el menú automático de Streamlit */
 [data-testid="stSidebarNav"],
 [data-testid="stSidebarNavContent"],
-section[data-testid="stSidebar"] > div:first-child,
-div[data-testid="stSidebarNav"],
-.css-1d391kg,
-.css-1lcbmhc,
-.st-emotion-cache-1lcbmhc,
-.st-emotion-cache-1av4cm7,
-.st-emotion-cache-1d391kg {
+section[data-testid="stSidebar"] > div:first-child {
     display: none !important;
     visibility: hidden !important;
     height: 0px !important;
-    min-height: 0px !important;
-    max-height: 0px !important;
     overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
-    top: -9999px !important;
 }
 
-/* Asegurar que nuestro sidebar se vea */
+/* NO ocultar nuestro sidebar personalizado */
 section[data-testid="stSidebar"] {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+}
+
+/* Asegurar que nuestros elementos se vean */
+.st-expander,
+.st-emotion-cache-1jicfl2,
+[data-testid="stExpander"] {
     display: block !important;
     visibility: visible !important;
 }
