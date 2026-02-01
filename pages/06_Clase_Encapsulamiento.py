@@ -1,12 +1,16 @@
 import streamlit as st
 from io import StringIO
 import sys
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Clase 5 - Encapsulamiento",
     page_icon="🔒",
     layout="wide"
 )
+
+# Aplicar estilos personalizados y ocultar menú automático
+apply_custom_styles()
 
 st.markdown("""
 <style>
@@ -23,19 +27,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
-with st.sidebar:
-    st.title("🔒 Clase 5: Encapsulamiento")
-    st.markdown("""
-    ### Objetivos:
-    1. Entender el encapsulamiento
-    2. Usar atributos privados
-    3. Crear getters y setters
-    4. Aplicar modificadores de acceso
-    
-    ### Navegación:
-    """)
-    st.page_link("streamlit_app.py", label="🏠 Home")
+# Crear menú lateral personalizado
+create_sidebar_menu()
     st.page_link("pages/05_Clase_Polimorfismo.py", label="⬅️ Anterior")
     st.page_link("pages/07_Clase_MetodosEspeciales.py", label="➡️ Siguiente")
 

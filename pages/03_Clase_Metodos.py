@@ -1,12 +1,16 @@
 import streamlit as st
 from io import StringIO
 import sys
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Clase 2 - Métodos",
     page_icon="⚙️",
     layout="wide"
 )
+
+# Aplicar estilos personalizados y ocultar menú automático
+apply_custom_styles()
 
 st.markdown("""
 <style>
@@ -23,23 +27,10 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
-with st.sidebar:
-    st.title("⚙️ Clase 2: Métodos")
-    st.markdown("""
-    ### Objetivos:
-    1. Entender el parámetro `self`
-    2. Crear métodos de instancia
-    3. Usar métodos con parámetros
-    4. Diferenciar atributos y métodos
-
-    ### Navegación:
-    """)
-    st.page_link("streamlit_app.py", label="🏠 Home")
-    st.page_link("pages/02_Clase_Classes.py", label="⬅️ Anterior")
-    st.page_link("pages/04_Clase_Herencia.py", label="➡️ Siguiente")
-
 st.title("⚙️ Clase 2: Métodos y el Parámetro Self")
+
+# Crear menú lateral personalizado
+create_sidebar_menu()
 
 col1, col2 = st.columns([1, 1])
 

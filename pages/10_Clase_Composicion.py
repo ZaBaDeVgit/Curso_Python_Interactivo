@@ -1,12 +1,16 @@
 import streamlit as st
 from io import StringIO
 import sys
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Clase 9 - Composición",
     page_icon="🧩",
     layout="wide"
 )
+
+# Aplicar estilos personalizados y ocultar menú automático
+apply_custom_styles()
 
 st.markdown("""
 <style>
@@ -23,19 +27,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
-with st.sidebar:
-    st.title("🧩 Clase 9: Composición vs Herencia")
-    st.markdown("""
-    ### Objetivos:
-    1. Entender composición
-    2. Comparar con herencia
-    3. Aplicar "has-a" vs "is-a"
-    4. Crear objetos compuestos
-
-    ### Navegación:
-    """)
-    st.page_link("streamlit_app.py", label="🏠 Home")
+# Crear menú lateral personalizado
+create_sidebar_menu()
     st.page_link("pages/09_Clase_MetodosClase.py", label="⬅️ Anterior")
     st.page_link("pages/11_Clase_MiniCalc.py", label="➡️ Siguiente")
 

@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Introducción",
@@ -6,12 +7,13 @@ st.set_page_config(
     layout="wide"
 )
 
+# Aplicar estilos personalizados y ocultar menú automático
+apply_custom_styles()
+
 st.title("🏠 Introducción al Curso")
 
-with st.sidebar:
-    st.title("📚 Navegación")
-    st.page_link("streamlit_app.py", label="🏠 Home")
-    st.page_link("pages/02_Clase_Classes.py", label="📦 Siguiente: Classes")
+# Crear menú lateral personalizado
+create_sidebar_menu()
 
 st.markdown("""
 ## Bienvenido al curso de Python POO

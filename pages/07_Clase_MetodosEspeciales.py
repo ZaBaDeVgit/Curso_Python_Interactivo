@@ -1,12 +1,16 @@
 import streamlit as st
 from io import StringIO
 import sys
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Clase 6 - Métodos Especiales",
     page_icon="✨",
     layout="wide"
 )
+
+# Aplicar estilos personalizados y ocultar menú automático
+apply_custom_styles()
 
 st.markdown("""
 <style>
@@ -23,19 +27,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
-with st.sidebar:
-    st.title("✨ Clase 6: Métodos Especiales")
-    st.markdown("""
-    ### Objetivos:
-    1. Entender métodos mágicos
-    2. Implementar __str__ y __repr__
-    3. Sobrecargar operadores
-    4. Usar métodos de comparación
-    
-    ### Navegación:
-    """)
-    st.page_link("streamlit_app.py", label="🏠 Home")
+# Crear menú lateral personalizado
+create_sidebar_menu()
     st.page_link("pages/06_Clase_Encapsulamiento.py", label="⬅️ Anterior")
     st.page_link("pages/08_Clase_Propiedades.py", label="➡️ Siguiente")
 
