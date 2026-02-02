@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.styles import apply_custom_styles, create_sidebar_menu
+from utils.styles import apply_custom_styles, create_sidebar_menu, create_sidebar_toggle
 
 st.set_page_config(
     page_title="Introducción",
@@ -9,6 +9,9 @@ st.set_page_config(
 
 # Aplicar estilos personalizados y ocultar menú automático
 apply_custom_styles()
+
+# Crear botón de toggle para el sidebar
+create_sidebar_toggle()
 
 st.title("🏠 Introducción al Curso")
 

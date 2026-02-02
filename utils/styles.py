@@ -32,6 +32,7 @@ def apply_custom_styles():
         section[data-testid="stSidebar"] {
             display: block !important;
             visibility: visible !important;
+            transition: margin-left 0.3s ease !important;
         }
 
         /* Asegurar que los expanders se vean */
@@ -86,7 +87,109 @@ def apply_custom_styles():
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
+
+        /* === ESTILOS PARA CONTROL DEL SIDEBAR === */
+        .sidebar-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .sidebar-collapsed {
+            margin-left: -300px !important;
+        }
+
+        .sidebar-expanded {
+            margin-left: 0px !important;
+        }
+
+        /* Ajustar contenido principal cuando sidebar está colapsado */
+        .main-content-collapsed {
+            margin-left: 0px !important;
+        }
+
+        /* Ocultar botón de toggle en modo móvil */
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: none;
+            }
+        }
     </style>
+    """, unsafe_allow_html=True)
+
+
+def create_sidebar_toggle():
+    """Crea el botón para toggle del sidebar"""
+    st.markdown("""
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
+        <span id="toggle-icon">☰</span>
+    </button>
+
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const mainContent = document.querySelector('.main .block-container');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        if (sidebar.classList.contains('sidebar-collapsed')) {
+            // Expandir sidebar
+            sidebar.classList.remove('sidebar-collapsed');
+            sidebar.classList.add('sidebar-expanded');
+            if (mainContent) {
+                mainContent.classList.remove('main-content-collapsed');
+            }
+            toggleIcon.textContent = '☰';
+            localStorage.setItem('sidebar-state', 'expanded');
+        } else {
+            // Colapsar sidebar
+            sidebar.classList.remove('sidebar-expanded');
+            sidebar.classList.add('sidebar-collapsed');
+            if (mainContent) {
+                mainContent.classList.add('main-content-collapsed');
+            }
+            toggleIcon.textContent = '☰';
+            localStorage.setItem('sidebar-state', 'collapsed');
+        }
+    }
+
+    // Restaurar estado del sidebar al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarState = localStorage.getItem('sidebar-state');
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const mainContent = document.querySelector('.main .block-container');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        if (sidebarState === 'collapsed' && sidebar) {
+            sidebar.classList.add('sidebar-collapsed');
+            sidebar.classList.remove('sidebar-expanded');
+            if (mainContent) {
+                mainContent.classList.add('main-content-collapsed');
+            }
+            if (toggleIcon) {
+                toggleIcon.textContent = '☰';
+            }
+        }
+    });
+    </script>
     """, unsafe_allow_html=True)
 
 
