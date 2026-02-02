@@ -114,45 +114,135 @@ def apply_custom_styles():
         .toggle-container:active {
             transform: translateY(0px);
         }
+
+        /* === ESTILOS PARA BOTÓN TOGGLE EXTERNO === */
+        .sidebar-toggle-external {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99999;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-width: 180px;
+        }
+
+        .sidebar-toggle-external:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .sidebar-toggle-external:active {
+            transform: translateY(0px);
+        }
+
+        /* Ocultar botón en modo móvil */
+        @media (max-width: 768px) {
+            .sidebar-toggle-external {
+                display: none;
+            }
+        }
+
+        /* Estilos para el sidebar colapsado */
+        .sidebar-hidden {
+            margin-left: -350px !important;
+            opacity: 0.1 !important;
+            pointer-events: none !important;
+        }
+
+        .sidebar-visible {
+            margin-left: 0px !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
     </style>
     """, unsafe_allow_html=True)
 
 
 def create_sidebar_toggle():
-    """Crea el botón para toggle del sidebar - VERSIÓN SIMPLIFICADA"""
-    # Esta función ya NO se usa, el toggle está en create_sidebar_menu()
-    pass
+    """Crea el botón externo para toggle del sidebar"""
+    st.markdown("""
+    <button class="sidebar-toggle-external" onclick="toggleSidebar()" title="Ocultar/Mostrar Menú">
+        ☰ Menú
+    </button>
+
+    <script>
+    // Variable global para rastrear el estado
+    let sidebarCollapsed = false;
+
+    function toggleSidebar() {
+        console.log('Toggle clicked - Estado actual:', sidebarCollapsed);
+
+        // Buscar el sidebar
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        if (!sidebar) {
+            console.error('Sidebar no encontrado');
+            return;
+        }
+
+        // Toggle del estado
+        sidebarCollapsed = !sidebarCollapsed;
+        console.log('Nuevo estado:', sidebarCollapsed);
+
+        if (sidebarCollapsed) {
+            // Colapsar
+            sidebar.classList.add('sidebar-hidden');
+            sidebar.classList.remove('sidebar-visible');
+            localStorage.setItem('sidebar-state', 'collapsed');
+        } else {
+            // Expandir
+            sidebar.classList.add('sidebar-visible');
+            sidebar.classList.remove('sidebar-hidden');
+            localStorage.setItem('sidebar-state', 'expanded');
+        }
+    }
+
+    // Inicializar al cargar
+    function initSidebar() {
+        const savedState = localStorage.getItem('sidebar-state');
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+
+        if (sidebar && savedState === 'collapsed') {
+            sidebarCollapsed = true;
+            sidebar.classList.add('sidebar-hidden');
+            sidebar.classList.remove('sidebar-visible');
+            console.log('Sidebar inicializado como colapsado');
+        } else {
+            sidebarCollapsed = false;
+            sidebar.classList.add('sidebar-visible');
+            sidebar.classList.remove('sidebar-hidden');
+            console.log('Sidebar inicializado como expandido');
+        }
+    }
+
+    // Múltiples intentos para asegurar que funcione
+    setTimeout(initSidebar, 100);
+    setTimeout(initSidebar, 500);
+    setTimeout(initSidebar, 1000);
+    setTimeout(initSidebar, 2000);
+
+    // También cuando el DOM cambia
+    if (window.MutationObserver) {
+        const observer = new MutationObserver(() => {
+            setTimeout(initSidebar, 100);
+        });
+        observer.observe(document.body, {childList: true, subtree: true});
+    }
+    </script>
+    """, unsafe_allow_html=True)
 
 
 def create_sidebar_menu():
     """Crea el menú lateral personalizado con todos los módulos y clases"""
     with st.sidebar:
-        # BOTÓN TOGGLE SIMPLIFICADO - VISIBLE
-        if st.button("☰ Ocultar/Mostrar Menú", key="toggle_sidebar", use_container_width=True):
-            st.session_state.sidebar_collapsed = not st.session_state.get('sidebar_collapsed', False)
-
-        # Aplicar JavaScript si está colapsado
-        if st.session_state.get('sidebar_collapsed', False):
-            st.markdown("""
-            <script>
-            const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-            if (sidebar) {
-                sidebar.style.marginLeft = '-350px';
-                sidebar.style.opacity = '0.3';
-            }
-            </script>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <script>
-            const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-            if (sidebar) {
-                sidebar.style.marginLeft = '0px';
-                sidebar.style.opacity = '1';
-            }
-            </script>
-            """, unsafe_allow_html=True)
-
         st.title("📚 Bienvenid@s al Curso")
         st.markdown("---")
 
@@ -221,4 +311,4 @@ def create_sidebar_menu():
             st.write("• Proyecto: Framework Web")
 
         st.markdown("---")
-        st.caption("💡 Usa las flechas para expandir/contraer módulos")
+        st.caption("💡 Usa el botón ☰ Menú para ocultar/mostrar este menú")
