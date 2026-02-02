@@ -32,7 +32,7 @@ def apply_custom_styles():
         section[data-testid="stSidebar"] {
             display: block !important;
             visibility: visible !important;
-            transition: margin-left 0.3s ease !important;
+            transition: all 0.3s ease !important;
         }
 
         /* Asegurar que los expanders se vean */
@@ -88,10 +88,31 @@ def apply_custom_styles():
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
+        /* === ESTILOS PARA BOTÓN TOGGLE DENTRO DEL SIDEBAR === */
+        .sidebar-toggle-btn {
+            background: #667eea !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 5px !important;
+            padding: 0.5rem 1rem !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #764ba2 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
+        }
+
         /* === ESTILOS PARA CONTROL DEL SIDEBAR === */
         .sidebar-toggle {
             position: fixed;
-            top: 10px;
+            top: 70px;
             left: 10px;
             z-index: 99999;
             background: #667eea;
@@ -139,19 +160,12 @@ def apply_custom_styles():
             margin-left: 0px !important;
             max-width: 100% !important;
         }
-
-        /* Ocultar botón de toggle en modo móvil */
-        @media (max-width: 768px) {
-            .sidebar-toggle {
-                display: none !important;
-            }
-        }
     </style>
     """, unsafe_allow_html=True)
 
 
 def create_sidebar_toggle():
-    """Crea el botón para toggle del sidebar con JavaScript simplificado"""
+    """Crea el botón para toggle del sidebar con JavaScript mejorado"""
     st.markdown("""
     <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
         <span id="toggle-icon">☰</span>
@@ -166,6 +180,8 @@ def create_sidebar_toggle():
 
         // Buscar el sidebar
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const toggleIcon = document.getElementById('toggle-icon');
+
         if (!sidebar) {
             console.error('Sidebar no encontrado');
             return;
@@ -181,6 +197,7 @@ def create_sidebar_toggle():
             sidebar.style.transform = 'translateX(-350px)';
             sidebar.style.opacity = '0.3';
             sidebar.style.pointerEvents = 'none';
+            if (toggleIcon) toggleIcon.textContent = '→';
             localStorage.setItem('sidebar-state', 'collapsed');
         } else {
             // Expandir
@@ -188,6 +205,7 @@ def create_sidebar_toggle():
             sidebar.style.transform = 'translateX(0px)';
             sidebar.style.opacity = '1';
             sidebar.style.pointerEvents = 'auto';
+            if (toggleIcon) toggleIcon.textContent = '☰';
             localStorage.setItem('sidebar-state', 'expanded');
         }
     }
@@ -196,6 +214,7 @@ def create_sidebar_toggle():
     function initSidebar() {
         const savedState = localStorage.getItem('sidebar-state');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const toggleIcon = document.getElementById('toggle-icon');
 
         if (sidebar && savedState === 'collapsed') {
             sidebarCollapsed = true;
@@ -203,9 +222,11 @@ def create_sidebar_toggle():
             sidebar.style.transform = 'translateX(-350px)';
             sidebar.style.opacity = '0.3';
             sidebar.style.pointerEvents = 'none';
+            if (toggleIcon) toggleIcon.textContent = '→';
             console.log('Sidebar inicializado como colapsado');
         } else {
             sidebarCollapsed = false;
+            if (toggleIcon) toggleIcon.textContent = '☰';
             console.log('Sidebar inicializado como expandido');
         }
     }
@@ -230,6 +251,62 @@ def create_sidebar_toggle():
 def create_sidebar_menu():
     """Crea el menú lateral personalizado con todos los módulos y clases"""
     with st.sidebar:
+        # BOTÓN TOGGLE DENTRO DEL SIDEBAR
+        st.markdown("""
+        <div style="margin-bottom: 1rem;">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <span id="sidebar-toggle-text">☰ Ocultar Menú</span>
+            </button>
+        </div>
+
+        <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+            const toggleText = document.getElementById('sidebar-toggle-text');
+
+            if (!sidebar) return;
+
+            const isCollapsed = sidebar.style.marginLeft === '-350px';
+
+            if (isCollapsed) {
+                // Expandir
+                sidebar.style.marginLeft = '0px';
+                sidebar.style.transform = 'translateX(0px)';
+                sidebar.style.opacity = '1';
+                sidebar.style.pointerEvents = 'auto';
+                if (toggleText) toggleText.textContent = '☰ Ocultar Menú';
+                localStorage.setItem('sidebar-state', 'expanded');
+            } else {
+                // Colapsar
+                sidebar.style.marginLeft = '-350px';
+                sidebar.style.transform = 'translateX(-350px)';
+                sidebar.style.opacity = '0.3';
+                sidebar.style.pointerEvents = 'none';
+                if (toggleText) toggleText.textContent = '→ Mostrar Menú';
+                localStorage.setItem('sidebar-state', 'collapsed');
+            }
+        }
+
+        // Inicializar estado al cargar
+        function initSidebarState() {
+            const savedState = localStorage.getItem('sidebar-state');
+            const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+            const toggleText = document.getElementById('sidebar-toggle-text');
+
+            if (sidebar && savedState === 'collapsed') {
+                sidebar.style.marginLeft = '-350px';
+                sidebar.style.transform = 'translateX(-350px)';
+                sidebar.style.opacity = '0.3';
+                sidebar.style.pointerEvents = 'none';
+                if (toggleText) toggleText.textContent = '→ Mostrar Menú';
+            }
+        }
+
+        setTimeout(initSidebarState, 100);
+        setTimeout(initSidebarState, 500);
+        </script>
+        """, unsafe_allow_html=True)
+
         st.title("📚 Bienvenid@s al Curso")
         st.markdown("---")
 
