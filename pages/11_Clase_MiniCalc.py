@@ -36,8 +36,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/10_Clase_Composicion.py", label="⬅️ Anterior")
-    st.page_link("streamlit_app.py", label="➡️ Siguiente (Módulo 2)")
 
 st.title("🧮 Clase 10: Proyecto Final - MiniCalculadora POO")
 

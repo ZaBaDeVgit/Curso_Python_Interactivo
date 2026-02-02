@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/05_Clase_Polimorfismo.py", label="⬅️ Anterior")
-    st.page_link("pages/07_Clase_MetodosEspeciales.py", label="➡️ Siguiente")
 
 st.title("🔒 Clase 5: Encapsulamiento y Modificadores de Acceso")
 
@@ -53,54 +51,54 @@ with col1:
     <p><i>Pista: usa __ para privado y _ para protegido</i></p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     if st.button("🆘 Ver Solución"):
         st.code("""
 class CuentaBancaria:
     def __init__(self, titular, saldo_inicial=0):
         self._titular = titular  # protegido
         self.__saldo = saldo_inicial  # privado
-    
+
     def depositar(self, cantidad):
         if cantidad > 0:
             self.__saldo += cantidad
             return f"Depositado: ${cantidad}"
         return "Cantidad inválida"
-    
+
     def retirar(self, cantidad):
         if cantidad > 0 and self.__saldo >= cantidad:
             self.__saldo -= cantidad
             return f"Retirado: ${cantidad}"
         return "Fondos insuficientes o cantidad inválida"
-    
+
     def get_saldo(self):
         return self.__saldo
-    
+
     def get_titular(self):
         return self._titular
         """, language="python")
 
 with col2:
     st.subheader("💻 Editor de Código")
-    
+
     codigo_default = """class CuentaBancaria:
     def __init__(self, titular, saldo_inicial=0):
         # Define atributo protegido para el titular
         # Define atributo privado para el saldo
         pass
-    
+
     def depositar(self, cantidad):
         # Valida y deposita cantidad
         pass
-    
+
     def retirar(self, cantidad):
         # Valida y retira cantidad
         pass
-    
+
     def get_saldo(self):
         # Retorna el saldo privado
         pass
-    
+
     def get_titular(self):
         # Retorna el titular protegido
         pass
@@ -114,16 +112,16 @@ print(cuenta.retirar(200))
 print(f"Saldo final: ${cuenta.get_saldo()}")"""
 
     codigo = st.text_area("Escribe tu código:", value=codigo_default, height=300)
-    
+
     if st.button("▶️ Ejecutar Código", type="primary"):
         old_stdout = sys.stdout
         sys.stdout = buffer = StringIO()
-        
+
         try:
             exec(codigo, {"__name__": "__main__"})
             sys.stdout = old_stdout
             output = buffer.getvalue()
-            
+
             if output:
                 st.success("✅ Resultado:")
                 st.code(output, language="text")

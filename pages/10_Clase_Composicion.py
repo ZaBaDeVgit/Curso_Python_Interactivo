@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/09_Clase_MetodosClase.py", label="⬅️ Anterior")
-    st.page_link("pages/11_Clase_MiniCalc.py", label="➡️ Siguiente")
 
 st.title("🧩 Clase 9: Composición vs Herencia")
 

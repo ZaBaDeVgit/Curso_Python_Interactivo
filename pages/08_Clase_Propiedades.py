@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/07_Clase_MetodosEspeciales.py", label="⬅️ Anterior")
-    st.page_link("pages/09_Clase_MetodosClase.py", label="➡️ Siguiente")
 
 st.title("🏗️ Clase 7: Propiedades y Decoradores")
 

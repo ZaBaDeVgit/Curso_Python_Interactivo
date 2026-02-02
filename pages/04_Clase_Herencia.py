@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/03_Clase_Metodos.py", label="⬅️ Anterior")
-    st.page_link("pages/05_Clase_Polimorfismo.py", label="➡️ Siguiente")
 
 st.title("🔗 Clase 3: Herencia y Clases Hijas")
 
@@ -52,14 +50,14 @@ with col1:
     <p><i>Pista: class Perro(Animal):</i></p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     if st.button("🆘 Ver Solución"):
         st.code("""
 class Animal:
     def __init__(self, nombre, edad):
         self.nombre = nombre
         self.edad = edad
-    
+
     def hacer_sonido(self):
         return "Sonido genérico"
 
@@ -67,7 +65,7 @@ class Perro(Animal):
     def __init__(self, nombre, edad, raza):
         super().__init__(nombre, edad)
         self.raza = raza
-    
+
     def hacer_sonido(self):
         return "¡Guau!"
 
@@ -75,19 +73,19 @@ class Gato(Animal):
     def __init__(self, nombre, edad, vidas=7):
         super().__init__(nombre, edad)
         self.vidas = vidas
-    
+
     def hacer_sonido(self):
         return "¡Miau!"
         """, language="python")
 
 with col2:
     st.subheader("💻 Editor de Código")
-    
+
     codigo_default = """class Animal:
     def __init__(self, nombre, edad):
         # Completa los atributos base
         pass
-    
+
     def hacer_sonido(self):
         # Retorna un sonido genérico
         pass
@@ -96,7 +94,7 @@ class Perro(Animal):
     def __init__(self, nombre, edad, raza):
         # Llama al __init__ de Animal y agrega raza
         pass
-    
+
     def hacer_sonido(self):
         # Retorna "¡Guau!"
         pass
@@ -105,7 +103,7 @@ class Gato(Animal):
     def __init__(self, nombre, edad, vidas=7):
         # Llama al __init__ de Animal y agrega vidas
         pass
-    
+
     def hacer_sonido(self):
         # Retorna "¡Miau!"
         pass
@@ -117,16 +115,16 @@ print(f"{perro.nombre} dice: {perro.hacer_sonido()}")
 print(f"{gato.nombre} dice: {gato.hacer_sonido()}")"""
 
     codigo = st.text_area("Escribe tu código:", value=codigo_default, height=300)
-    
+
     if st.button("▶️ Ejecutar Código", type="primary"):
         old_stdout = sys.stdout
         sys.stdout = buffer = StringIO()
-        
+
         try:
             exec(codigo, {"__name__": "__main__"})
             sys.stdout = old_stdout
             output = buffer.getvalue()
-            
+
             if output:
                 st.success("✅ Resultado:")
                 st.code(output, language="text")

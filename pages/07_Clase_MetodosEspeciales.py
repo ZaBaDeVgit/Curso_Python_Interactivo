@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/06_Clase_Encapsulamiento.py", label="⬅️ Anterior")
-    st.page_link("pages/08_Clase_Propiedades.py", label="➡️ Siguiente")
 
 st.title("✨ Clase 6: Métodos Especiales (Dunder Methods)")
 

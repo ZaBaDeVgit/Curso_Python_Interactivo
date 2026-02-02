@@ -29,8 +29,6 @@ st.markdown("""
 
 # Crear menú lateral personalizado
 create_sidebar_menu()
-    st.page_link("pages/04_Clase_Herencia.py", label="⬅️ Anterior")
-    st.page_link("pages/06_Clase_Encapsulamiento.py", label="➡️ Siguiente")
 
 st.title("🎭 Clase 4: Polimorfismo - Múltiples Formas")
 
@@ -52,7 +50,7 @@ with col1:
     <p><i>Pista: todas deben tener método area()</i></p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     if st.button("🆘 Ver Solución"):
         st.code("""
 import math
@@ -64,14 +62,14 @@ class Figura:
 class Cuadrado(Figura):
     def __init__(self, lado):
         self.lado = lado
-    
+
     def area(self):
         return self.lado ** 2
 
 class Circulo(Figura):
     def __init__(self, radio):
         self.radio = radio
-    
+
     def area(self):
         return math.pi * self.radio ** 2
 
@@ -79,7 +77,7 @@ class Triangulo(Figura):
     def __init__(self, base, altura):
         self.base = base
         self.altura = altura
-    
+
     def area(self):
         return (self.base * self.altura) / 2
 
@@ -89,7 +87,7 @@ def calcular_area(figura):
 
 with col2:
     st.subheader("💻 Editor de Código")
-    
+
     codigo_default = """import math
 
 class Figura:
@@ -100,7 +98,7 @@ class Figura:
 class Cuadrado(Figura):
     def __init__(self, lado):
         self.lado = lado
-    
+
     def area(self):
         # Calcula área del cuadrado
         pass
@@ -108,7 +106,7 @@ class Cuadrado(Figura):
 class Circulo(Figura):
     def __init__(self, radio):
         self.radio = radio
-    
+
     def area(self):
         # Calcula área del círculo
         pass
@@ -128,16 +126,16 @@ for fig in figuras:
     print(f"Área: {calcular_area(fig):.2f}")"""
 
     codigo = st.text_area("Escribe tu código:", value=codigo_default, height=300)
-    
+
     if st.button("▶️ Ejecutar Código", type="primary"):
         old_stdout = sys.stdout
         sys.stdout = buffer = StringIO()
-        
+
         try:
             exec(codigo, {"__name__": "__main__"})
             sys.stdout = old_stdout
             output = buffer.getvalue()
-            
+
             if output:
                 st.success("✅ Resultado:")
                 st.code(output, language="text")
