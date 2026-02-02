@@ -88,172 +88,138 @@ def apply_custom_styles():
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
-        /* === ESTILOS PARA BOTÓN TOGGLE === */
-        .toggle-container {
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .toggle-container:hover {
-            background: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
-        }
-
-        .toggle-container:active {
-            transform: translateY(0px);
-        }
-
         /* === ESTILOS PARA BOTÓN TOGGLE EXTERNO === */
-        .sidebar-toggle-external {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 99999;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            min-width: 180px;
+        .toggle-btn-external {
+            position: fixed !important;
+            top: 70px !important;
+            left: 20px !important;
+            z-index: 999999 !important;
+            background: #667eea !important;
+            color: white !important;
+            border: 2px solid white !important;
+            border-radius: 8px !important;
+            padding: 12px 20px !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+            transition: all 0.3s ease !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
-        .sidebar-toggle-external:hover {
-            background: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .sidebar-toggle-external:active {
-            transform: translateY(0px);
-        }
-
-        /* Ocultar botón en modo móvil */
-        @media (max-width: 768px) {
-            .sidebar-toggle-external {
-                display: none;
-            }
+        .toggle-btn-external:hover {
+            background: #764ba2 !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5) !important;
         }
 
         /* Estilos para el sidebar colapsado */
-        .sidebar-hidden {
-            margin-left: -350px !important;
-            opacity: 0.1 !important;
-            pointer-events: none !important;
-        }
-
-        .sidebar-visible {
-            margin-left: 0px !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
+        section[data-testid="stSidebar"] {
+            transition: all 0.4s ease !important;
         }
     </style>
     """, unsafe_allow_html=True)
 
 
 def create_sidebar_toggle():
-    """Crea el botón externo para toggle del sidebar - POSICIÓN AJUSTADA"""
+    """Crea el botón externo para toggle del sidebar"""
     st.markdown("""
-    <div style="position: fixed; top: 60px; left: 20px; z-index: 99999;">
-        <button onclick="toggleSidebar()" style="
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            min-width: 180px;
-            display: block !important;
-            visibility: visible !important;
-        " onmouseover="this.style.background='#764ba2'; this.style.transform='translateY(-2px)'"
-           onmouseout="this.style.background='#667eea'; this.style.transform='translateY(0px)'"
-           title="Ocultar/Mostrar Menú">
-            ☰ Menú
-        </button>
-    </div>
+    <button id="toggleSidebarBtn" class="toggle-btn-external" onclick="toggleSidebar()">
+        <span id="toggleIcon">☰</span> Menú
+    </button>
 
     <script>
-    // Función para toggle del sidebar
+    let sidebarCollapsed = false;
+
     function toggleSidebar() {
-        console.log('Toggle clicked');
+        console.log('🔘 Toggle clicked');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        if (sidebar) {
-            console.log('Sidebar encontrado:', sidebar);
-            if (sidebar.style.marginLeft === '-350px' || sidebar.style.marginLeft === '') {
-                sidebar.style.marginLeft = '-350px';
-                sidebar.style.opacity = '0.1';
-                localStorage.setItem('sidebar-state', 'collapsed');
-                console.log('Sidebar colapsado');
-            } else {
-                sidebar.style.marginLeft = '0px';
-                sidebar.style.opacity = '1';
-                localStorage.setItem('sidebar-state', 'expanded');
-                console.log('Sidebar expandido');
-            }
+        const icon = document.getElementById('toggleIcon');
+
+        if (!sidebar) {
+            console.error('❌ Sidebar no encontrado');
+            return;
+        }
+
+        sidebarCollapsed = !sidebarCollapsed;
+        console.log('📊 Nuevo estado:', sidebarCollapsed ? 'COLAPSADO' : 'EXPANDIDO');
+
+        if (sidebarCollapsed) {
+            // Colapsar
+            sidebar.style.marginLeft = '-350px';
+            sidebar.style.opacity = '0.2';
+            sidebar.style.pointerEvents = 'none';
+            if (icon) icon.textContent = '→';
+            localStorage.setItem('sidebar-state', 'collapsed');
         } else {
-            console.error('Sidebar no encontrado');
+            // Expandir
+            sidebar.style.marginLeft = '0px';
+            sidebar.style.opacity = '1';
+            sidebar.style.pointerEvents = 'auto';
+            if (icon) icon.textContent = '☰';
+            localStorage.setItem('sidebar-state', 'expanded');
         }
     }
 
-    // Inicializar estado guardado y asegurar que el botón esté visible
-    function initToggle() {
-        console.log('Inicializando toggle');
+    function initSidebarToggle() {
+        console.log('🚀 Inicializando toggle del sidebar');
+
         const savedState = localStorage.getItem('sidebar-state');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const button = document.querySelector('button[onclick="toggleSidebar()"]');
+        const icon = document.getElementById('toggleIcon');
+        const btn = document.getElementById('toggleSidebarBtn');
 
-        console.log('Estado guardado:', savedState);
-        console.log('Sidebar:', !!sidebar);
-        console.log('Botón:', !!button);
-
-        if (sidebar && savedState === 'collapsed') {
-            sidebar.style.marginLeft = '-350px';
-            sidebar.style.opacity = '0.1';
-            console.log('Sidebar inicializado como colapsado');
-        }
+        console.log('💾 Estado guardado:', savedState);
+        console.log('📍 Sidebar encontrado:', !!sidebar);
+        console.log('🔘 Botón encontrado:', !!btn);
 
         // Asegurar que el botón sea visible
-        if (button) {
-            button.style.display = 'block';
-            button.style.visibility = 'visible';
-            console.log('Botón hecho visible');
+        if (btn) {
+            btn.style.display = 'block';
+            btn.style.visibility = 'visible';
+            btn.style.opacity = '1';
+            console.log('✅ Botón forzado a visible');
+        }
+
+        // Restaurar estado guardado
+        if (sidebar && savedState === 'collapsed') {
+            sidebarCollapsed = true;
+            sidebar.style.marginLeft = '-350px';
+            sidebar.style.opacity = '0.2';
+            sidebar.style.pointerEvents = 'none';
+            if (icon) icon.textContent = '→';
+            console.log('📦 Sidebar restaurado como colapsado');
+        } else {
+            sidebarCollapsed = false;
+            if (icon) icon.textContent = '☰';
+            console.log('📂 Sidebar restaurado como expandido');
         }
     }
 
-    // Múltiples intentos para asegurar que funcione
-    initToggle();
-    setTimeout(initToggle, 100);
-    setTimeout(initToggle, 500);
-    setTimeout(initToggle, 1000);
-    setTimeout(initToggle, 2000);
+    // Ejecutar múltiples veces para asegurar que funcione
+    console.log('⏱️ Programando inicializaciones...');
+    setTimeout(initSidebarToggle, 100);
+    setTimeout(initSidebarToggle, 300);
+    setTimeout(initSidebarToggle, 500);
+    setTimeout(initSidebarToggle, 1000);
+    setTimeout(initSidebarToggle, 2000);
 
-    // También cuando el DOM cambia
+    // Observer para cuando el DOM cambie
     if (window.MutationObserver) {
-        const observer = new MutationObserver(function(mutations) {
-            setTimeout(initToggle, 100);
+        const observer = new MutationObserver(() => {
+            setTimeout(initSidebarToggle, 100);
         });
         observer.observe(document.body, {childList: true, subtree: true});
+        console.log('👁️ Observer de DOM activado');
     }
+
+    // También al cargar la página
+    window.addEventListener('load', () => {
+        setTimeout(initSidebarToggle, 100);
+        console.log('📄 Página cargada');
+    });
     </script>
     """, unsafe_allow_html=True)
 
@@ -329,4 +295,4 @@ def create_sidebar_menu():
             st.write("• Proyecto: Framework Web")
 
         st.markdown("---")
-        st.caption("💡 Usa el botón ☰ Menú para ocultar/mostrar este menú")
+        st.caption("💡 Usa el botón ☰ Menú (esquina superior izquierda) para ocultar/mostrar este menú")
