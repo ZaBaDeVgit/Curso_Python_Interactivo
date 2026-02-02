@@ -93,14 +93,14 @@ def apply_custom_styles():
             position: fixed;
             top: 10px;
             left: 10px;
-            z-index: 9999;
+            z-index: 99999;
             background: #667eea;
             color: white;
             border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -114,23 +114,36 @@ def apply_custom_styles():
             transform: scale(1.1);
         }
 
+        /* Estilos para el sidebar */
+        section[data-testid="stSidebar"] {
+            transition: all 0.3s ease !important;
+            position: relative !important;
+        }
+
         .sidebar-collapsed {
-            margin-left: -300px !important;
+            margin-left: -350px !important;
+            transform: translateX(-350px) !important;
+            opacity: 0.3 !important;
+            pointer-events: none !important;
         }
 
         .sidebar-expanded {
             margin-left: 0px !important;
+            transform: translateX(0px) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
         }
 
         /* Ajustar contenido principal cuando sidebar está colapsado */
         .main-content-collapsed {
             margin-left: 0px !important;
+            max-width: 100% !important;
         }
 
         /* Ocultar botón de toggle en modo móvil */
         @media (max-width: 768px) {
             .sidebar-toggle {
-                display: none;
+                display: none !important;
             }
         }
     </style>
@@ -138,57 +151,78 @@ def apply_custom_styles():
 
 
 def create_sidebar_toggle():
-    """Crea el botón para toggle del sidebar"""
+    """Crea el botón para toggle del sidebar con JavaScript simplificado"""
     st.markdown("""
     <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
         <span id="toggle-icon">☰</span>
     </button>
 
     <script>
-    function toggleSidebar() {
-        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const mainContent = document.querySelector('.main .block-container');
-        const toggleIcon = document.getElementById('toggle-icon');
+    // Variable global para rastrear el estado
+    let sidebarCollapsed = false;
 
-        if (sidebar.classList.contains('sidebar-collapsed')) {
-            // Expandir sidebar
-            sidebar.classList.remove('sidebar-collapsed');
-            sidebar.classList.add('sidebar-expanded');
-            if (mainContent) {
-                mainContent.classList.remove('main-content-collapsed');
-            }
-            toggleIcon.textContent = '☰';
-            localStorage.setItem('sidebar-state', 'expanded');
-        } else {
-            // Colapsar sidebar
-            sidebar.classList.remove('sidebar-expanded');
-            sidebar.classList.add('sidebar-collapsed');
-            if (mainContent) {
-                mainContent.classList.add('main-content-collapsed');
-            }
-            toggleIcon.textContent = '☰';
+    function toggleSidebar() {
+        console.log('Toggle clicked - Estado actual:', sidebarCollapsed);
+
+        // Buscar el sidebar
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        if (!sidebar) {
+            console.error('Sidebar no encontrado');
+            return;
+        }
+
+        // Toggle del estado
+        sidebarCollapsed = !sidebarCollapsed;
+        console.log('Nuevo estado:', sidebarCollapsed);
+
+        if (sidebarCollapsed) {
+            // Colapsar
+            sidebar.style.marginLeft = '-350px';
+            sidebar.style.transform = 'translateX(-350px)';
+            sidebar.style.opacity = '0.3';
+            sidebar.style.pointerEvents = 'none';
             localStorage.setItem('sidebar-state', 'collapsed');
+        } else {
+            // Expandir
+            sidebar.style.marginLeft = '0px';
+            sidebar.style.transform = 'translateX(0px)';
+            sidebar.style.opacity = '1';
+            sidebar.style.pointerEvents = 'auto';
+            localStorage.setItem('sidebar-state', 'expanded');
         }
     }
 
-    // Restaurar estado del sidebar al cargar la página
-    document.addEventListener('DOMContentLoaded', function() {
-        const sidebarState = localStorage.getItem('sidebar-state');
+    // Inicializar al cargar
+    function initSidebar() {
+        const savedState = localStorage.getItem('sidebar-state');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const mainContent = document.querySelector('.main .block-container');
-        const toggleIcon = document.getElementById('toggle-icon');
 
-        if (sidebarState === 'collapsed' && sidebar) {
-            sidebar.classList.add('sidebar-collapsed');
-            sidebar.classList.remove('sidebar-expanded');
-            if (mainContent) {
-                mainContent.classList.add('main-content-collapsed');
-            }
-            if (toggleIcon) {
-                toggleIcon.textContent = '☰';
-            }
+        if (sidebar && savedState === 'collapsed') {
+            sidebarCollapsed = true;
+            sidebar.style.marginLeft = '-350px';
+            sidebar.style.transform = 'translateX(-350px)';
+            sidebar.style.opacity = '0.3';
+            sidebar.style.pointerEvents = 'none';
+            console.log('Sidebar inicializado como colapsado');
+        } else {
+            sidebarCollapsed = false;
+            console.log('Sidebar inicializado como expandido');
         }
-    });
+    }
+
+    // Múltiples intentos para asegurar que funcione
+    setTimeout(initSidebar, 100);
+    setTimeout(initSidebar, 500);
+    setTimeout(initSidebar, 1000);
+    setTimeout(initSidebar, 2000);
+
+    // También cuando el DOM cambia
+    if (window.MutationObserver) {
+        const observer = new MutationObserver(() => {
+            setTimeout(initSidebar, 100);
+        });
+        observer.observe(document.body, {childList: true, subtree: true});
+    }
     </script>
     """, unsafe_allow_html=True)
 
