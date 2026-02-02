@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 def apply_custom_styles():
     """Aplica estilos personalizados y oculta el menú automático de Streamlit"""
@@ -87,141 +88,134 @@ def apply_custom_styles():
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
-
-        /* === ESTILOS PARA BOTÓN TOGGLE EXTERNO === */
-        .toggle-btn-external {
-            position: fixed !important;
-            top: 70px !important;
-            left: 20px !important;
-            z-index: 999999 !important;
-            background: #667eea !important;
-            color: white !important;
-            border: 2px solid white !important;
-            border-radius: 8px !important;
-            padding: 12px 20px !important;
-            cursor: pointer !important;
-            font-size: 16px !important;
-            font-weight: 700 !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-            transition: all 0.3s ease !important;
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-
-        .toggle-btn-external:hover {
-            background: #764ba2 !important;
-            transform: scale(1.05) !important;
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5) !important;
-        }
-
-        /* Estilos para el sidebar colapsado */
-        section[data-testid="stSidebar"] {
-            transition: all 0.4s ease !important;
-        }
     </style>
     """, unsafe_allow_html=True)
 
 
 def create_sidebar_toggle():
-    """Crea el botón externo para toggle del sidebar"""
-    st.markdown("""
-    <button id="toggleSidebarBtn" class="toggle-btn-external" onclick="toggleSidebar()">
-        <span id="toggleIcon">☰</span> Menú
-    </button>
+    """Crea el botón externo para toggle del sidebar usando components.html"""
+    components.html(
+        """
+        <style>
+            .toggle-btn-external {
+                position: fixed;
+                top: 70px;
+                left: 20px;
+                z-index: 999999;
+                background: #667eea;
+                color: white;
+                border: 2px solid white;
+                border-radius: 8px;
+                padding: 12px 20px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 700;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                transition: all 0.3s ease;
+                display: block;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
 
-    <script>
-    let sidebarCollapsed = false;
+            .toggle-btn-external:hover {
+                background: #764ba2;
+                transform: scale(1.05);
+                box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+            }
 
-    function toggleSidebar() {
-        console.log('🔘 Toggle clicked');
-        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const icon = document.getElementById('toggleIcon');
+            .toggle-btn-external:active {
+                transform: scale(0.98);
+            }
+        </style>
 
-        if (!sidebar) {
-            console.error('❌ Sidebar no encontrado');
-            return;
-        }
+        <button id="toggleSidebarBtn" class="toggle-btn-external">
+            <span id="toggleIcon">☰</span> Menú
+        </button>
 
-        sidebarCollapsed = !sidebarCollapsed;
-        console.log('📊 Nuevo estado:', sidebarCollapsed ? 'COLAPSADO' : 'EXPANDIDO');
+        <script>
+            (function() {
+                let sidebarCollapsed = false;
 
-        if (sidebarCollapsed) {
-            // Colapsar
-            sidebar.style.marginLeft = '-350px';
-            sidebar.style.opacity = '0.2';
-            sidebar.style.pointerEvents = 'none';
-            if (icon) icon.textContent = '→';
-            localStorage.setItem('sidebar-state', 'collapsed');
-        } else {
-            // Expandir
-            sidebar.style.marginLeft = '0px';
-            sidebar.style.opacity = '1';
-            sidebar.style.pointerEvents = 'auto';
-            if (icon) icon.textContent = '☰';
-            localStorage.setItem('sidebar-state', 'expanded');
-        }
-    }
+                function toggleSidebar() {
+                    console.log('🔘 Toggle clicked');
 
-    function initSidebarToggle() {
-        console.log('🚀 Inicializando toggle del sidebar');
+                    // Buscar el sidebar en el documento padre (Streamlit)
+                    const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
+                    const icon = document.getElementById('toggleIcon');
 
-        const savedState = localStorage.getItem('sidebar-state');
-        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const icon = document.getElementById('toggleIcon');
-        const btn = document.getElementById('toggleSidebarBtn');
+                    if (!sidebar) {
+                        console.error('❌ Sidebar no encontrado');
+                        return;
+                    }
 
-        console.log('💾 Estado guardado:', savedState);
-        console.log('📍 Sidebar encontrado:', !!sidebar);
-        console.log('🔘 Botón encontrado:', !!btn);
+                    sidebarCollapsed = !sidebarCollapsed;
+                    console.log('📊 Nuevo estado:', sidebarCollapsed ? 'COLAPSADO' : 'EXPANDIDO');
 
-        // Asegurar que el botón sea visible
-        if (btn) {
-            btn.style.display = 'block';
-            btn.style.visibility = 'visible';
-            btn.style.opacity = '1';
-            console.log('✅ Botón forzado a visible');
-        }
+                    if (sidebarCollapsed) {
+                        // Colapsar
+                        sidebar.style.marginLeft = '-350px';
+                        sidebar.style.opacity = '0.2';
+                        sidebar.style.pointerEvents = 'none';
+                        if (icon) icon.textContent = '→';
+                        localStorage.setItem('sidebar-state', 'collapsed');
+                    } else {
+                        // Expandir
+                        sidebar.style.marginLeft = '0px';
+                        sidebar.style.opacity = '1';
+                        sidebar.style.pointerEvents = 'auto';
+                        if (icon) icon.textContent = '☰';
+                        localStorage.setItem('sidebar-state', 'expanded');
+                    }
+                }
 
-        // Restaurar estado guardado
-        if (sidebar && savedState === 'collapsed') {
-            sidebarCollapsed = true;
-            sidebar.style.marginLeft = '-350px';
-            sidebar.style.opacity = '0.2';
-            sidebar.style.pointerEvents = 'none';
-            if (icon) icon.textContent = '→';
-            console.log('📦 Sidebar restaurado como colapsado');
-        } else {
-            sidebarCollapsed = false;
-            if (icon) icon.textContent = '☰';
-            console.log('📂 Sidebar restaurado como expandido');
-        }
-    }
+                function initSidebarToggle() {
+                    console.log('🚀 Inicializando toggle del sidebar');
 
-    // Ejecutar múltiples veces para asegurar que funcione
-    console.log('⏱️ Programando inicializaciones...');
-    setTimeout(initSidebarToggle, 100);
-    setTimeout(initSidebarToggle, 300);
-    setTimeout(initSidebarToggle, 500);
-    setTimeout(initSidebarToggle, 1000);
-    setTimeout(initSidebarToggle, 2000);
+                    const savedState = localStorage.getItem('sidebar-state');
+                    const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
+                    const icon = document.getElementById('toggleIcon');
 
-    // Observer para cuando el DOM cambie
-    if (window.MutationObserver) {
-        const observer = new MutationObserver(() => {
-            setTimeout(initSidebarToggle, 100);
-        });
-        observer.observe(document.body, {childList: true, subtree: true});
-        console.log('👁️ Observer de DOM activado');
-    }
+                    console.log('💾 Estado guardado:', savedState);
 
-    // También al cargar la página
-    window.addEventListener('load', () => {
-        setTimeout(initSidebarToggle, 100);
-        console.log('📄 Página cargada');
-    });
-    </script>
-    """, unsafe_allow_html=True)
+                    // Restaurar estado guardado
+                    if (sidebar && savedState === 'collapsed') {
+                        sidebarCollapsed = true;
+                        sidebar.style.marginLeft = '-350px';
+                        sidebar.style.opacity = '0.2';
+                        sidebar.style.pointerEvents = 'none';
+                        if (icon) icon.textContent = '→';
+                        console.log('📦 Sidebar restaurado como colapsado');
+                    } else {
+                        sidebarCollapsed = false;
+                        if (icon) icon.textContent = '☰';
+                        console.log('📂 Sidebar restaurado como expandido');
+                    }
+                }
+
+                // Asignar evento al botón
+                const btn = document.getElementById('toggleSidebarBtn');
+                if (btn) {
+                    btn.addEventListener('click', toggleSidebar);
+                    console.log('✅ Evento click asignado al botón');
+                }
+
+                // Inicializar
+                setTimeout(initSidebarToggle, 100);
+                setTimeout(initSidebarToggle, 500);
+                setTimeout(initSidebarToggle, 1000);
+
+                // Observer para cuando el DOM del padre cambie
+                if (window.MutationObserver) {
+                    const observer = new MutationObserver(() => {
+                        setTimeout(initSidebarToggle, 100);
+                    });
+                    observer.observe(window.parent.document.body, {childList: true, subtree: true});
+                    console.log('👁️ Observer activado');
+                }
+            })();
+        </script>
+        """,
+        height=0,  # Altura 0 para que no ocupe espacio
+    )
 
 
 def create_sidebar_menu():
