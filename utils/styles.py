@@ -168,74 +168,54 @@ def apply_custom_styles():
 
 
 def create_sidebar_toggle():
-    """Crea el botón externo para toggle del sidebar"""
+    """Crea el botón externo para toggle del sidebar - VERSIÓN HTML PURO"""
     st.markdown("""
-    <button class="sidebar-toggle-external" onclick="toggleSidebar()" title="Ocultar/Mostrar Menú">
-        ☰ Menú
-    </button>
+    <div style="position: fixed; top: 20px; left: 20px; z-index: 99999;">
+        <button onclick="toggleSidebar()" style="
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-width: 180px;
+        " onmouseover="this.style.background='#764ba2'; this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.background='#667eea'; this.style.transform='translateY(0px)'"
+           title="Ocultar/Mostrar Menú">
+            ☰ Menú
+        </button>
+    </div>
 
     <script>
-    // Variable global para rastrear el estado
-    let sidebarCollapsed = false;
-
     function toggleSidebar() {
-        console.log('Toggle clicked - Estado actual:', sidebarCollapsed);
-
-        // Buscar el sidebar
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        if (!sidebar) {
-            console.error('Sidebar no encontrado');
-            return;
-        }
-
-        // Toggle del estado
-        sidebarCollapsed = !sidebarCollapsed;
-        console.log('Nuevo estado:', sidebarCollapsed);
-
-        if (sidebarCollapsed) {
-            // Colapsar
-            sidebar.classList.add('sidebar-hidden');
-            sidebar.classList.remove('sidebar-visible');
-            localStorage.setItem('sidebar-state', 'collapsed');
-        } else {
-            // Expandir
-            sidebar.classList.add('sidebar-visible');
-            sidebar.classList.remove('sidebar-hidden');
-            localStorage.setItem('sidebar-state', 'expanded');
+        if (sidebar) {
+            if (sidebar.style.marginLeft === '-350px') {
+                sidebar.style.marginLeft = '0px';
+                sidebar.style.opacity = '1';
+                localStorage.setItem('sidebar-state', 'expanded');
+            } else {
+                sidebar.style.marginLeft = '-350px';
+                sidebar.style.opacity = '0.1';
+                localStorage.setItem('sidebar-state', 'collapsed');
+            }
         }
     }
 
     // Inicializar al cargar
-    function initSidebar() {
+    setTimeout(function() {
         const savedState = localStorage.getItem('sidebar-state');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
 
         if (sidebar && savedState === 'collapsed') {
-            sidebarCollapsed = true;
-            sidebar.classList.add('sidebar-hidden');
-            sidebar.classList.remove('sidebar-visible');
-            console.log('Sidebar inicializado como colapsado');
-        } else {
-            sidebarCollapsed = false;
-            sidebar.classList.add('sidebar-visible');
-            sidebar.classList.remove('sidebar-hidden');
-            console.log('Sidebar inicializado como expandido');
+            sidebar.style.marginLeft = '-350px';
+            sidebar.style.opacity = '0.1';
         }
-    }
-
-    // Múltiples intentos para asegurar que funcione
-    setTimeout(initSidebar, 100);
-    setTimeout(initSidebar, 500);
-    setTimeout(initSidebar, 1000);
-    setTimeout(initSidebar, 2000);
-
-    // También cuando el DOM cambia
-    if (window.MutationObserver) {
-        const observer = new MutationObserver(() => {
-            setTimeout(initSidebar, 100);
-        });
-        observer.observe(document.body, {childList: true, subtree: true});
-    }
+    }, 500);
     </script>
     """, unsafe_allow_html=True)
 
