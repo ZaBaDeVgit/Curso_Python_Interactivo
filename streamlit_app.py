@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.styles import apply_custom_styles, create_sidebar_menu
+from utils.styles import apply_custom_styles, create_sidebar_menu, create_navigation_buttons
 
 st.set_page_config(
     page_title="Curso Python POO",
@@ -76,6 +76,9 @@ with col2:
 st.markdown("---")
 st.markdown("### 🚀 ¿Listo para empezar?")
 st.write("Selecciona una clase del menú lateral o haz clic en los botones de arriba para comenzar tu viaje en la Programación Orientada a Objetos.")
+
+# Navegación inferior centrada y responsive
+create_navigation_buttons(next_page="pages/01_Introduccion.py")
 
 st.markdown("---")
 st.caption("Curso creado por ZaBaDeV con ❤️ | © 2024")

@@ -69,6 +69,91 @@ def apply_custom_styles():
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
+
+        /* === ESTILOS PARA NAVEGACIÓN INFERIOR CENTRADA === */
+        .navigation-container {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            margin: 2rem 0 !important;
+            padding: 1.5rem !important;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            z-index: 1000 !important;
+            width: auto !important;
+            max-width: 90vw !important;
+        }
+
+        .navigation-container button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: 2px solid white !important;
+            border-radius: 10px !important;
+            padding: 0.75rem 1.5rem !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+            min-width: 120px !important;
+        }
+
+        .navigation-container button:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5) !important;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+        }
+
+        .navigation-container button:active {
+            transform: translateY(-1px) !important;
+        }
+
+        /* Responsive para móvil */
+        @media (max-width: 768px) {
+            .navigation-container {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+                padding: 1rem !important;
+                width: 85vw !important;
+            }
+
+            .navigation-container button {
+                width: 100% !important;
+                min-width: unset !important;
+                padding: 0.6rem 1rem !important;
+                font-size: 13px !important;
+            }
+        }
+
+        /* Responsive para tablet */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .navigation-container {
+                width: 80vw !important;
+                gap: 0.8rem !important;
+            }
+
+            .navigation-container button {
+                min-width: 100px !important;
+                padding: 0.6rem 1.2rem !important;
+                font-size: 13px !important;
+            }
+        }
+
+        /* Espacio para evitar que el contenido se solape con la navegación */
+        .main-content {
+            padding-bottom: 120px !important;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding-bottom: 180px !important;
+            }
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -145,3 +230,36 @@ def create_sidebar_menu():
 
         st.markdown("---")
         st.caption("💡 Usa la flecha ☰ en la esquina superior izquierda para ocultar/mostrar este menú")
+
+
+def create_navigation_buttons(prev_page=None, home_page="streamlit_app.py", next_page=None):
+    """Crea botones de navegación centrados y responsive"""
+    if prev_page or home_page or next_page:
+        st.markdown("""
+        <div class="navigation-container">
+        """, unsafe_allow_html=True)
+
+        cols = st.columns([1, 1, 1] if prev_page and home_page and next_page else
+                          [1, 2, 1] if prev_page and home_page else
+                          [2, 1] if home_page and next_page else
+                          [1, 2] if prev_page and next_page else [1])
+
+        with cols[0] if prev_page else cols[1] if not prev_page else cols[0]:
+            if prev_page:
+                if st.button("⬅️ Anterior", key="nav_prev"):
+                    st.switch_page(prev_page)
+
+        with cols[1] if home_page else (cols[0] if not prev_page else cols[1]):
+            if home_page:
+                if st.button("🏠 Home", key="nav_home"):
+                    st.switch_page(home_page)
+
+        with cols[2] if next_page else (cols[1] if not next_page else cols[2]):
+            if next_page:
+                if st.button("➡️ Siguiente", key="nav_next"):
+                    st.switch_page(next_page)
+
+        st.markdown("""
+        </div>
+        <div class="main-content"></div>
+        """, unsafe_allow_html=True)

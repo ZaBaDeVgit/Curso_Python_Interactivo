@@ -1,7 +1,7 @@
 import streamlit as st
 from io import StringIO
 import sys
-from utils.styles import apply_custom_styles, create_sidebar_menu
+from utils.styles import apply_custom_styles, create_sidebar_menu, create_navigation_buttons
 st.set_page_config(
     page_title="Clase 2 - Métodos",
     page_icon="⚙️",
@@ -156,18 +156,8 @@ with col_exp2:
     </div>
     """, unsafe_allow_html=True)
 
-# Navegación
-st.markdown("---")
-col_prev, col_home, col_next = st.columns(3)
-
-with col_prev:
-    if st.button("⬅️ Anterior"):
-        st.switch_page("pages/02_Clase_Classes.py")
-
-with col_home:
-    if st.button("🏠 Home"):
-        st.switch_page("streamlit_app.py")
-
-with col_next:
-    if st.button("➡️ Siguiente"):
-        st.switch_page("pages/04_Clase_Herencia.py")
+# Navegación inferior centrada y responsive
+create_navigation_buttons(
+    prev_page="pages/02_Clase_Classes.py",
+    next_page="pages/04_Clase_Herencia.py"
+)

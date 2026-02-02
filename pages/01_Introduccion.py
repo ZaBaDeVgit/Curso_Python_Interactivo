@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.styles import apply_custom_styles, create_sidebar_menu
+from utils.styles import apply_custom_styles, create_sidebar_menu, create_navigation_buttons, create_navigation_buttons
 
 st.set_page_config(
     page_title="Introducción",
@@ -31,8 +31,5 @@ En este curso aprenderás:
 
 st.info("👈 Haz clic en 'Siguiente: Classes' en el menú lateral para empezar")
 
-# Navegación inferior
-col1, col2, col3 = st.columns([1, 2, 1])
-with col3:
-    if st.button("➡️ Ir a Clase 1", type="primary"):
-        st.switch_page("pages/02_Clase_Classes.py")
+# Navegación inferior centrada y responsive
+create_navigation_buttons(next_page="pages/02_Clase_Classes.py")
