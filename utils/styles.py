@@ -239,23 +239,69 @@ def create_navigation_buttons(prev_page=None, home_page="streamlit_app.py", next
         <div class="navigation-container">
         """, unsafe_allow_html=True)
 
-        cols = st.columns([1, 1, 1] if prev_page and home_page and next_page else
-                          [1, 2, 1] if prev_page and home_page else
-                          [2, 1] if home_page and next_page else
-                          [1, 2] if prev_page and next_page else [1])
+        # Determinar el número de botones y configurar columnas
+        buttons_count = sum([bool(prev_page), bool(home_page), bool(next_page)])
 
-        with cols[0] if prev_page else cols[1] if not prev_page else cols[0]:
-            if prev_page:
+        if buttons_count == 1:
+            # Solo un botón - centrado
+            cols = st.columns([1, 2, 1])
+            col_index = 1  # Columna del centro
+        elif buttons_count == 2:
+            # Dos botones - distribuidos
+            cols = st.columns([1, 1, 1])
+            if prev_page and home_page:
+                prev_col, home_col = cols[0], cols[1]
+            elif prev_page and next_page:
+                prev_col, next_col = cols[0], cols[2]
+            else:  # home_page and next_page
+                home_col, next_col = cols[1], cols[2]
+        else:
+            # Tres botones - distribuidos
+            cols = st.columns([1, 1, 1])
+            prev_col, home_col, next_col = cols[0], cols[1], cols[2]
+
+        # Crear los botones según corresponda
+        if buttons_count == 1:
+            with cols[col_index]:
+                if prev_page:
+                    if st.button("⬅️ Anterior", key="nav_prev"):
+                        st.switch_page(prev_page)
+                elif home_page:
+                    if st.button("🏠 Home", key="nav_home"):
+                        st.switch_page(home_page)
+                elif next_page:
+                    if st.button("➡️ Siguiente", key="nav_next"):
+                        st.switch_page(next_page)
+        elif buttons_count == 2:
+            if prev_page and home_page:
+                with prev_col:
+                    if st.button("⬅️ Anterior", key="nav_prev"):
+                        st.switch_page(prev_page)
+                with home_col:
+                    if st.button("🏠 Home", key="nav_home"):
+                        st.switch_page(home_page)
+            elif prev_page and next_page:
+                with prev_col:
+                    if st.button("⬅️ Anterior", key="nav_prev"):
+                        st.switch_page(prev_page)
+                with next_col:
+                    if st.button("➡️ Siguiente", key="nav_next"):
+                        st.switch_page(next_page)
+            else:  # home_page and next_page
+                with home_col:
+                    if st.button("🏠 Home", key="nav_home"):
+                        st.switch_page(home_page)
+                with next_col:
+                    if st.button("➡️ Siguiente", key="nav_next"):
+                        st.switch_page(next_page)
+        else:  # buttons_count == 3
+            with prev_col:
                 if st.button("⬅️ Anterior", key="nav_prev"):
                     st.switch_page(prev_page)
-
-        with cols[1] if home_page else (cols[0] if not prev_page else cols[1]):
-            if home_page:
+            with home_col:
                 if st.button("🏠 Home", key="nav_home"):
                     st.switch_page(home_page)
-
-        with cols[2] if next_page else (cols[1] if not next_page else cols[2]):
-            if next_page:
+            with next_col:
                 if st.button("➡️ Siguiente", key="nav_next"):
                     st.switch_page(next_page)
 
