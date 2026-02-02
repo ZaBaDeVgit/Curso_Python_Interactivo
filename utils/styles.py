@@ -2,10 +2,11 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 def apply_custom_styles():
-    """Aplica estilos personalizados y oculta el menú automático de Streamlit"""
+    """Aplica estilos personalizados y modifica el menú automático de Streamlit"""
     st.markdown("""
     <style>
-        /* === OCULTAR MENÚ AUTOMÁTICO DE STREAMLIT === */
+        /* === MODIFICAR MENÚ AUTOMÁTICO DE STREAMLIT === */
+        /* Mostrar solo las flechas del toggle, ocultar todo lo demás */
         [data-testid="stSidebarNav"] {
             display: none !important;
             visibility: hidden !important;
@@ -13,20 +14,51 @@ def apply_custom_styles():
             position: absolute !important;
         }
 
-        /* Ocultar el contenedor del menú automático */
+        /* Ocultar el contenedor principal del menú automático */
         section[data-testid="stSidebar"] > div:first-child > div:first-child {
             display: none !important;
         }
 
-        /* Para versiones más recientes de Streamlit */
-        section[data-testid="stSidebar"] ul {
+        /* Ocultar todos los enlaces y contenido del menú automático */
+        section[data-testid="stSidebar"] ul,
+        section[data-testid="stSidebar"] li,
+        section[data-testid="stSidebar"] a,
+        section[data-testid="stSidebar"] .st-emotion-cache-1gwvy71,
+        section[data-testid="stSidebar"] .st-emotion-cache-pkbazv {
             display: none !important;
+            visibility: hidden !important;
         }
 
-        /* Clases adicionales que puede usar Streamlit */
-        .st-emotion-cache-1gwvy71,
-        .st-emotion-cache-pkbazv {
-            display: none !important;
+        /* PERO MANTENER VISIBLE EL BOTÓN TOGGLE DE STREAMLIT */
+        /* El botón de toggle del sidebar (flecha) */
+        button[kind="header"],
+        button[data-testid="baseButton-header"],
+        .st-emotion-cache-1r6slb0,
+        button[aria-label="View sidebar"] {
+            display: block !important;
+            visibility: visible !important;
+            position: fixed !important;
+            top: 10px !important;
+            left: 10px !important;
+            z-index: 99999 !important;
+            background: #667eea !important;
+            color: white !important;
+            border: 2px solid white !important;
+            border-radius: 8px !important;
+            padding: 8px 12px !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        button[kind="header"]:hover,
+        button[data-testid="baseButton-header"]:hover,
+        .st-emotion-cache-1r6slb0:hover,
+        button[aria-label="View sidebar"]:hover {
+            background: #764ba2 !important;
+            transform: scale(1.1) !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5) !important;
         }
 
         /* === MANTENER VISIBLE EL SIDEBAR PERSONALIZADO === */
@@ -289,4 +321,4 @@ def create_sidebar_menu():
             st.write("• Proyecto: Framework Web")
 
         st.markdown("---")
-        st.caption("💡 Usa el botón ☰ Menú (esquina superior izquierda) para ocultar/mostrar este menú")
+        st.caption("💡 Usa la flecha ☰ en la esquina superior izquierda para ocultar/mostrar este menú")

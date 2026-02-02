@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.styles import apply_custom_styles, create_sidebar_menu, create_sidebar_toggle
+from utils.styles import apply_custom_styles, create_sidebar_menu
 
 st.set_page_config(
     page_title="Curso Python POO",
@@ -8,11 +8,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Aplicar estilos personalizados y ocultar menú automático
+# Aplicar estilos personalizados y mostrar solo flecha del menú
 apply_custom_styles()
-
-# Crear botón de toggle para el sidebar
-create_sidebar_toggle()
 
 st.markdown(
     """
