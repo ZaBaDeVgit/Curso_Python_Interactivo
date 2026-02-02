@@ -1,71 +1,20 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 def apply_custom_styles():
-    """Aplica estilos personalizados y modifica el menú automático de Streamlit"""
+    """Aplica estilos personalizados y muestra solo la flecha del menú de Streamlit"""
     st.markdown("""
     <style>
-        /* === MODIFICAR MENÚ AUTOMÁTICO DE STREAMLIT === */
-        /* Mostrar solo las flechas del toggle, ocultar todo lo demás */
+        /* === OCULTAR SOLO EL CONTENIDO DEL MENÚ AUTOMÁTICO === */
+        /* Ocultar navegación automática pero mantener el toggle */
         [data-testid="stSidebarNav"] {
             display: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            position: absolute !important;
         }
 
-        /* Ocultar el contenedor principal del menú automático */
-        section[data-testid="stSidebar"] > div:first-child > div:first-child {
-            display: none !important;
-        }
-
-        /* Ocultar todos los enlaces y contenido del menú automático */
-        section[data-testid="stSidebar"] ul,
-        section[data-testid="stSidebar"] li,
-        section[data-testid="stSidebar"] a,
-        section[data-testid="stSidebar"] .st-emotion-cache-1gwvy71,
-        section[data-testid="stSidebar"] .st-emotion-cache-pkbazv {
-            display: none !important;
-            visibility: hidden !important;
-        }
-
-        /* PERO MANTENER VISIBLE EL BOTÓN TOGGLE DE STREAMLIT */
-        /* El botón de toggle del sidebar (flecha) */
-        button[kind="header"],
-        button[data-testid="baseButton-header"],
-        .st-emotion-cache-1r6slb0,
-        button[aria-label="View sidebar"] {
-            display: block !important;
-            visibility: visible !important;
-            position: fixed !important;
-            top: 10px !important;
-            left: 10px !important;
-            z-index: 99999 !important;
-            background: #667eea !important;
-            color: white !important;
-            border: 2px solid white !important;
-            border-radius: 8px !important;
-            padding: 8px 12px !important;
-            font-size: 18px !important;
-            font-weight: bold !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-            transition: all 0.3s ease !important;
-        }
-
-        button[kind="header"]:hover,
-        button[data-testid="baseButton-header"]:hover,
-        .st-emotion-cache-1r6slb0:hover,
-        button[aria-label="View sidebar"]:hover {
-            background: #764ba2 !important;
-            transform: scale(1.1) !important;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5) !important;
-        }
-
-        /* === MANTENER VISIBLE EL SIDEBAR PERSONALIZADO === */
+        /* === MANTENER TODO LO DEMÁS VISIBLE === */
+        /* Sidebar personalizado completamente visible */
         section[data-testid="stSidebar"] {
             display: block !important;
             visibility: visible !important;
-            transition: all 0.3s ease !important;
         }
 
         /* Asegurar que los expanders se vean */
@@ -122,132 +71,6 @@ def apply_custom_styles():
         }
     </style>
     """, unsafe_allow_html=True)
-
-
-def create_sidebar_toggle():
-    """Crea el botón externo para toggle del sidebar usando components.html"""
-    components.html(
-        """
-        <style>
-            .toggle-btn-external {
-                position: fixed;
-                top: 70px;
-                left: 20px;
-                z-index: 999999;
-                background: #667eea;
-                color: white;
-                border: 2px solid white;
-                border-radius: 8px;
-                padding: 12px 20px;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 700;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s ease;
-                display: block;
-                font-family: 'Source Sans Pro', sans-serif;
-            }
-
-            .toggle-btn-external:hover {
-                background: #764ba2;
-                transform: scale(1.05);
-                box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
-            }
-
-            .toggle-btn-external:active {
-                transform: scale(0.98);
-            }
-        </style>
-
-        <button id="toggleSidebarBtn" class="toggle-btn-external">
-            <span id="toggleIcon">☰</span> Menú
-        </button>
-
-        <script>
-            (function() {
-                let sidebarCollapsed = false;
-
-                function toggleSidebar() {
-                    console.log('🔘 Toggle clicked');
-
-                    // Buscar el sidebar en el documento padre (Streamlit)
-                    const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
-                    const icon = document.getElementById('toggleIcon');
-
-                    if (!sidebar) {
-                        console.error('❌ Sidebar no encontrado');
-                        return;
-                    }
-
-                    sidebarCollapsed = !sidebarCollapsed;
-                    console.log('📊 Nuevo estado:', sidebarCollapsed ? 'COLAPSADO' : 'EXPANDIDO');
-
-                    if (sidebarCollapsed) {
-                        // Colapsar
-                        sidebar.style.marginLeft = '-350px';
-                        sidebar.style.opacity = '0.2';
-                        sidebar.style.pointerEvents = 'none';
-                        if (icon) icon.textContent = '→';
-                        localStorage.setItem('sidebar-state', 'collapsed');
-                    } else {
-                        // Expandir
-                        sidebar.style.marginLeft = '0px';
-                        sidebar.style.opacity = '1';
-                        sidebar.style.pointerEvents = 'auto';
-                        if (icon) icon.textContent = '☰';
-                        localStorage.setItem('sidebar-state', 'expanded');
-                    }
-                }
-
-                function initSidebarToggle() {
-                    console.log('🚀 Inicializando toggle del sidebar');
-
-                    const savedState = localStorage.getItem('sidebar-state');
-                    const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
-                    const icon = document.getElementById('toggleIcon');
-
-                    console.log('💾 Estado guardado:', savedState);
-
-                    // Restaurar estado guardado
-                    if (sidebar && savedState === 'collapsed') {
-                        sidebarCollapsed = true;
-                        sidebar.style.marginLeft = '-350px';
-                        sidebar.style.opacity = '0.2';
-                        sidebar.style.pointerEvents = 'none';
-                        if (icon) icon.textContent = '→';
-                        console.log('📦 Sidebar restaurado como colapsado');
-                    } else {
-                        sidebarCollapsed = false;
-                        if (icon) icon.textContent = '☰';
-                        console.log('📂 Sidebar restaurado como expandido');
-                    }
-                }
-
-                // Asignar evento al botón
-                const btn = document.getElementById('toggleSidebarBtn');
-                if (btn) {
-                    btn.addEventListener('click', toggleSidebar);
-                    console.log('✅ Evento click asignado al botón');
-                }
-
-                // Inicializar
-                setTimeout(initSidebarToggle, 100);
-                setTimeout(initSidebarToggle, 500);
-                setTimeout(initSidebarToggle, 1000);
-
-                // Observer para cuando el DOM del padre cambie
-                if (window.MutationObserver) {
-                    const observer = new MutationObserver(() => {
-                        setTimeout(initSidebarToggle, 100);
-                    });
-                    observer.observe(window.parent.document.body, {childList: true, subtree: true});
-                    console.log('👁️ Observer activado');
-                }
-            })();
-        </script>
-        """,
-        height=0,  # Altura 0 para que no ocupe espacio
-    )
 
 
 def create_sidebar_menu():
