@@ -91,7 +91,7 @@ def apply_custom_styles():
 
 
 def create_sidebar_menu():
-    """Crea el menú lateral personalizado"""
+    """Crea el menú lateral personalizado con todos los módulos y clases"""
     with st.sidebar:
         st.title("📚 Bienvenid@s al Curso")
         st.markdown("---")
@@ -111,17 +111,54 @@ def create_sidebar_menu():
             st.page_link("pages/10_Clase_Composicion.py", label="10. Clase 9: Composición")
             st.page_link("pages/11_Clase_MiniCalc.py", label="11. Clase 10: Proyecto MiniCalc")
 
-        with st.expander("🚀 Módulo 2: POO Avanzado", expanded=False):
-            st.write("Próximamente...")
+        with st.expander("🚀 Módulo 2: POO Avanzado", expanded=True):
+            st.page_link("pages/12_Clase_HerenciaMultiple.py", label="12. Clase 11: Herencia Múltiple")
+            st.page_link("pages/13_Clase_Abstractas.py", label="13. Clase 12: Clases Abstractas")
+            st.page_link("pages/14_Clase_Interfaces.py", label="14. Clase 13: Interfaces y Protocolos")
+            st.page_link("pages/15_Clase_DuckTyping.py", label="15. Clase 14: Duck Typing Profundo")
+            st.page_link("pages/16_Clase_SobrecargaOperadores.py", label="16. Clase 15: Sobrecarga de Operadores")
+            st.page_link("pages/17_Clase_IteradoresGeneradores.py", label="17. Clase 16: Iteradores y Generadores")
+            st.page_link("pages/18_Clase_ContextManagers.py", label="18. Clase 17: Context Managers")
+            st.page_link("pages/19_Clase_DataClasses.py", label="19. Clase 18: Data Classes")
+            st.page_link("pages/20_Clase_Enums.py", label="20. Clase 19: Enums")
+            st.page_link("pages/21_Clase_ProyectoSistemaUsuarios.py", label="21. Clase 20: Proyecto Sistema Usuarios")
 
         with st.expander("🏗️ Módulo 3: Patrones de Diseño", expanded=False):
-            st.write("Próximamente...")
+            st.write("🔄 Próximamente...")
+            st.write("• Singleton")
+            st.write("• Factory Method")
+            st.write("• Observer")
+            st.write("• Strategy")
+            st.write("• Decorator")
+            st.write("• Adapter")
+            st.write("• Command")
+            st.write("• State")
+            st.write("• Template Method")
+            st.write("• Proyecto: Gestor de Tareas")
 
         with st.expander("🌐 Módulo 4: POO en el Mundo Real", expanded=False):
-            st.write("Próximamente...")
+            st.write("🔄 Próximamente...")
+            st.write("• APIs REST con POO")
+            st.write("• Bases de Datos ORM")
+            st.write("• Testing con POO")
+            st.write("• Logging y Monitoreo")
+            st.write("• Configuración y Settings")
+            st.write("• Validación de Datos")
+            st.write("• Serialización")
+            st.write("• Caching")
+            st.write("• Proyecto: Microservicios")
 
         with st.expander("⚡ Módulo 5: POO Moderna", expanded=False):
-            st.write("Próximamente...")
+            st.write("🔄 Próximamente...")
+            st.write("• Type Hints Avanzados")
+            st.write("• Async/Await con POO")
+            st.write("• Metaprogramación")
+            st.write("• Descriptores")
+            st.write("• Mixins y Traits")
+            st.write("• Inyección de Dependencias")
+            st.write("• Domain-Driven Design")
+            st.write("• Clean Architecture")
+            st.write("• Proyecto: Framework Web")
 
         st.markdown("---")
-        st.caption("💡 Navega usando los módulos")
+        st.caption("💡 Usa las flechas para expandir/contraer módulos")
