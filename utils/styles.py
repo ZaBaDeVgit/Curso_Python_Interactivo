@@ -168,9 +168,9 @@ def apply_custom_styles():
 
 
 def create_sidebar_toggle():
-    """Crea el botón externo para toggle del sidebar - VERSIÓN HTML PURO"""
+    """Crea el botón externo para toggle del sidebar - POSICIÓN AJUSTADA"""
     st.markdown("""
-    <div style="position: fixed; top: 20px; left: 20px; z-index: 99999;">
+    <div style="position: fixed; top: 60px; left: 20px; z-index: 99999;">
         <button onclick="toggleSidebar()" style="
             background: #667eea;
             color: white;
@@ -183,6 +183,8 @@ def create_sidebar_toggle():
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             min-width: 180px;
+            display: block !important;
+            visibility: visible !important;
         " onmouseover="this.style.background='#764ba2'; this.style.transform='translateY(-2px)'"
            onmouseout="this.style.background='#667eea'; this.style.transform='translateY(0px)'"
            title="Ocultar/Mostrar Menú">
@@ -191,31 +193,67 @@ def create_sidebar_toggle():
     </div>
 
     <script>
+    // Función para toggle del sidebar
     function toggleSidebar() {
+        console.log('Toggle clicked');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
         if (sidebar) {
-            if (sidebar.style.marginLeft === '-350px') {
-                sidebar.style.marginLeft = '0px';
-                sidebar.style.opacity = '1';
-                localStorage.setItem('sidebar-state', 'expanded');
-            } else {
+            console.log('Sidebar encontrado:', sidebar);
+            if (sidebar.style.marginLeft === '-350px' || sidebar.style.marginLeft === '') {
                 sidebar.style.marginLeft = '-350px';
                 sidebar.style.opacity = '0.1';
                 localStorage.setItem('sidebar-state', 'collapsed');
+                console.log('Sidebar colapsado');
+            } else {
+                sidebar.style.marginLeft = '0px';
+                sidebar.style.opacity = '1';
+                localStorage.setItem('sidebar-state', 'expanded');
+                console.log('Sidebar expandido');
             }
+        } else {
+            console.error('Sidebar no encontrado');
         }
     }
 
-    // Inicializar al cargar
-    setTimeout(function() {
+    // Inicializar estado guardado y asegurar que el botón esté visible
+    function initToggle() {
+        console.log('Inicializando toggle');
         const savedState = localStorage.getItem('sidebar-state');
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const button = document.querySelector('button[onclick="toggleSidebar()"]');
+
+        console.log('Estado guardado:', savedState);
+        console.log('Sidebar:', !!sidebar);
+        console.log('Botón:', !!button);
 
         if (sidebar && savedState === 'collapsed') {
             sidebar.style.marginLeft = '-350px';
             sidebar.style.opacity = '0.1';
+            console.log('Sidebar inicializado como colapsado');
         }
-    }, 500);
+
+        // Asegurar que el botón sea visible
+        if (button) {
+            button.style.display = 'block';
+            button.style.visibility = 'visible';
+            console.log('Botón hecho visible');
+        }
+    }
+
+    // Múltiples intentos para asegurar que funcione
+    initToggle();
+    setTimeout(initToggle, 100);
+    setTimeout(initToggle, 500);
+    setTimeout(initToggle, 1000);
+    setTimeout(initToggle, 2000);
+
+    // También cuando el DOM cambia
+    if (window.MutationObserver) {
+        const observer = new MutationObserver(function(mutations) {
+            setTimeout(initToggle, 100);
+        });
+        observer.observe(document.body, {childList: true, subtree: true});
+    }
     </script>
     """, unsafe_allow_html=True)
 
